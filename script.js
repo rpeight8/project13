@@ -19,14 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Проверка, было ли касание в нижнем левом углу кнопки
-  function checkIfBottomLeftCorner(touch) {
+  function checkIfBottomLeftCorner(x, y) {
     const rect = micButton.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    console.log(x, y);
-    console.log(rect.width * 0.25, rect.height * 0.75);
+    x = x - rect.left;
+    y = y - rect.top;
     // Проверяем, находится ли касание в нижнем левом углу (примерно четверть нижней части и левая часть)
-    return x <= rect.width * 0.15 && y >= rect.height * 0.5;
+    return x <= rect.width * 0.25 && y >= rect.height * 0.75;
   }
 
   // Начало записи при касании кнопки
