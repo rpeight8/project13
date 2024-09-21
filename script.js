@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     x = x - rect.left;
     y = y - rect.top;
     // Проверяем, находится ли касание в нижнем левом углу (примерно четверть нижней части и левая часть)
-    return x <= rect.width * 0.25 && y >= rect.height * 0.75;
+    return x <= rect.width * 0.5 && y >= rect.height * 0.75;
   }
 
   // Начало записи при касании кнопки
