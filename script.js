@@ -5,13 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isRecording = false;
   let nextEvaluation = "";
 
-  const evaluations = [
-    "Найк про",
-    "Щавель",
-    "Фары слепят",
-    "Персик",
-    "Ракушка",
-  ];
+  const evaluations = ["Нормис", "Щавель", "Фары слепят", "Персик", "Ракушка"];
 
   // Функция для случайной оценки обстановки
   function randomEvaluation() {
@@ -36,33 +30,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Начало записи при касании кнопки
-  micButton.addEventListener("touchstart", (event) => {
-    if (checkIfBottomLeftCorner(event.touches[0])) {
-      nextEvaluation = "Найк про";
-    }
-
+  // Начало записи (для мыши и для мобильных устройств)
+  function startRecording(x, y) {
     isRecording = true;
     resultText.classList.remove("show");
-    micButton.classList.add("recording");
-  });
+    micButton.classList.add("recording"); // Добавляем анимацию записи
 
-  // Окончание записи при завершении касания
-  micButton.addEventListener("touchend", () => {
+    // Проверяем, произошло ли касание/клик в нижнем левом углу
+    if (checkIfBottomLeftCorner(x, y)) {
+      nextEvaluation = "Найк про!";
+    }
+  }
+
+  // Окончание записи (для мыши и мобильных устройств)
+  function stopRecording() {
     if (isRecording) {
       isRecording = false;
       micButton.classList.remove("recording"); // Убираем анимацию записи
       resultText.textContent = randomEvaluation(); // Выводим случайную оценку или специальную
       resultText.classList.add("show"); // Плавное появление текста
     }
+  }
+
+  // События для мыши (desktop)
+  micButton.addEventListener("mousedown", (event) => {
+    startRecording(event.clientX, event.clientY);
   });
 
-  // Если палец убрали за пределы кнопки, остановить запись
+  micButton.addEventListener("mouseup", () => {
+    stopRecording();
+  });
+
+  micButton.addEventListener("mouseleave", () => {
+    stopRecording();
+  });
+
+  // События для мобильных устройств (touch)
+  micButton.addEventListener("touchstart", (event) => {
+    const touch = event.touches[0];
+    startRecording(touch.clientX, touch.clientY);
+  });
+
+  micButton.addEventListener("touchend", () => {
+    stopRecording();
+  });
+
   micButton.addEventListener("touchcancel", () => {
-    if (isRecording) {
-      isRecording = false;
-      micButton.classList.remove("recording");
-      resultText.textContent = randomEvaluation();
-      resultText.classList.add("show");
-    }
+    stopRecording();
   });
 });
